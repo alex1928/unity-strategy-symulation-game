@@ -11,6 +11,7 @@ public class DroneManager : MonoBehaviour
     Tower tower;
     public int dronesInside = 5;
     public int dronesToRelease = 5;
+    public float startDroneReleaseDelay = 0f;
     public GameObject dronePrefab;
     public Transform droneSpawnPoint;
     public Transform droneFirstTarget;
@@ -22,6 +23,7 @@ public class DroneManager : MonoBehaviour
     public delegate void StopFollowingObject(GameObject obj);
     public static event StopFollowingObject OnObjectDelete;
 
+    private bool startSpawningStarted = false;
     
     void Start() {
 
@@ -168,6 +170,12 @@ public class DroneManager : MonoBehaviour
         
         while(true) {
             
+            if(startSpawningStarted == false) {
+
+                startSpawningStarted = true;
+                yield return new WaitForSeconds(startDroneReleaseDelay);
+            }
+
             if(dronesToRelease > 0 && dronesInside > 0) {
 
                 dronesToRelease--;
